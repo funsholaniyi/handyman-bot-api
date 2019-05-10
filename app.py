@@ -1,7 +1,9 @@
 import json
-import random
 
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response
+
+from df_response_lib import facebook_response
+from handyman import HandyMan
 
 app = Flask(__name__)
 log = app.logger
@@ -26,45 +28,33 @@ def webhook():
 
     if action == 'search-handyman-around':
         res = search_handyman_around(req)
-    elif action == 'select-handyman-services':
-        res = select_handyman_services(req)
     else:
         response = {
-            'fulfillmentText': 'Today we recommend plumber {0}!'.format(random.choice(['Margherita', 'Salami'])),
+            'fulfillmentText': 'I did not quite understand you.',
         }
         res = create_response(response)
     return res
 
-    print('Action: ' + action)
-    print('Response: ' + res)
-
-    return make_response(jsonify({'fulfillmentText': res}))
-
-
-def select_handyman_services(req):
-    response = {
-        'fulfillmentText': 'Today we recommend plumber {0}!'.format(random.choice(['Margherita', 'Salami'])),
-    }
-    res = create_response(response)
-    return res
-
 
 def search_handyman_around(req):
-    """Returns a string containing text with a response to the user
-    with the weather forecast or a prompt for more information
-    Takes the city for the forecast and (optional) dates
-    uses the template responses found in weather_responses.py as templates
-    """
     parameters = req['queryResult']['parameters']
-
-    print('Dialogflow Parameters:')
-    print(json.dumps(parameters, indent=4))
-
-    response = {
-        'fulfillmentText': 'Today we recommend plumber {0}!'.format(random.choice(['Margherita', 'Salami'])),
-    }
-    res = create_response(response)
-    return res
+    handyman = HandyMan(parameters)
+    try:
+        results = handyman.get_list()
+        fb = facebook_response()
+        results = ['Musa', 'Ahmed']
+        reply = fb.quick_replies('Recommended Handymen', results)
+        response = {
+            'fulfillmentText': reply,
+        }
+        res = create_response(response)
+        return res
+    except Exception as e:
+        response = {
+            'fulfillmentText': 'Sorry, I could not find any match.',
+        }
+        res = create_response(response)
+        return res
 
 
 def create_response(response):
@@ -75,7 +65,6 @@ def create_response(response):
 
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
-
     return r
 
 
