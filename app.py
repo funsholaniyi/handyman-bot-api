@@ -1,58 +1,62 @@
 import json
-import logging
 import random
 
-from flask import Flask
-from flask import make_response
-from flask import request
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s')
+from flask import Flask, request, make_response, jsonify
 
 app = Flask(__name__)
+log = app.logger
+
+
+@app.route('/', methods=['GET'])
+def home():
+    return 'it works'
 
 
 # all requests from dialogflow will go throught webhook function
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    # get dialogflow request
+    """This method handles the http requests for the Dialogflow webhook
+    This is meant to be used in conjunction with the weather Dialogflow agent
+    """
     req = request.get_json(silent=True, force=True)
-
-    logger.info("Incoming request: %s", req)
-
-    intent = get_intent_from_req(req)
-    logger.info('Detected intent %s', intent)
-
-    # user asks for today's special
-    if intent == 'todays_special':
-
-        # pick any :)
-        response = {
-            'fulfillmentText': 'Today we recommend {0}!'.format(random.choice(['Margherita', 'Salami'])),
-        }
-    else:
-        # something went wrong here, we got unknow intent or request without intent
-        response = {
-            'fulfillmentText': 'Yeah, I\'m here but still learning, please wait for part 2 of this tutorial!',
-        }
-
-    res = create_response(response)
-
-    return res
-
-
-def get_intent_from_req(req):
-    """ Get intent name from dialogflow request"""
     try:
-        intent_name = req['queryResult']['intent']['displayName']
-    except KeyError:
-        return None
+        action = req.get('queryResult').get('action')
+    except AttributeError:
+        return 'json error'
 
-    return intent_name
+    if action == 'search-handyman-around':
+        res = search_handyman_around(req)
+    elif action == 'select-handyman-services':
+        res = select_handyman_services(req)
+    else:
+        log.error('Unexpected action.')
+
+    print('Action: ' + action)
+    print('Response: ' + res)
+
+    return make_response(jsonify({'fulfillmentText': res}))
+
+
+def select_handyman_services(req):
+    return
+
+
+def search_handyman_around(req):
+    """Returns a string containing text with a response to the user
+    with the weather forecast or a prompt for more information
+    Takes the city for the forecast and (optional) dates
+    uses the template responses found in weather_responses.py as templates
+    """
+    parameters = req['queryResult']['parameters']
+
+    print('Dialogflow Parameters:')
+    print(json.dumps(parameters, indent=4))
+
+    response = {
+        'fulfillmentText': 'Today we recommend {0}!'.format(random.choice(['Margherita', 'Salami'])),
+    }
+    res = create_response(response)
+    return res
 
 
 def create_response(response):
@@ -60,8 +64,6 @@ def create_response(response):
 
     # convert dictionary with our response to a JSON string
     res = json.dumps(response, indent=4)
-
-    logger.info(res)
 
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
