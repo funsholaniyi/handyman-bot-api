@@ -26,7 +26,7 @@ def webhook():
     except AttributeError:
         return 'json error'
 
-    if action == 'search-handyman-around':
+    if action == 'get_service_list':
         res = search_handyman_around(req)
     else:
         response = {
