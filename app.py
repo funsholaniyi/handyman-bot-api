@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, jsonify
 
-from df_response_lib import facebook_response
+from df_response_lib import facebook_response, fulfillment_response
 from handyman import HandyMan
 
 app = Flask(__name__)
@@ -46,8 +46,9 @@ def search_handyman_around(req):
     return reply
 
 
-def create_response(response):
-    return make_response(jsonify({'fulfillmentText': response}))
+def create_response(response_objs):
+    main_response = fulfillment_response()
+    return main_response.fulfillment_messages(response_objs)
 
 
 if __name__ == '__main__':
