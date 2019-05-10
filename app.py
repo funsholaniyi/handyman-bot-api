@@ -31,7 +31,7 @@ def webhook():
     if action == 'get_service_list':
         res = search_handyman_around(req)
     else:
-        res = aog.simple_response('I did not quite understand you.'),
+        res = aog.simple_response(['I did not quite understand you.']),
 
     return create_response(res)
 
@@ -43,11 +43,11 @@ def search_handyman_around(req):
         results = handyman.get_list()
         print(results)
         results = ['Musa', 'Ahmed']
-        aog_reply = aog.simple_response('Recommended Handymen')
+        aog_reply = aog.simple_response(['Recommended Handymen'])
         fb_reply = fb.quick_replies('Recommended Handymen', results)
     except Exception as e:
-        aog_reply = aog.simple_response('Sorry, I could not find any match.')
-        fb_reply = fb.text_response('Sorry, I could not find any match.')
+        aog_reply = aog.simple_response(['Sorry, I could not find any match.'])
+        fb_reply = fb.text_response(['Sorry, I could not find any match.'])
     return [aog_reply, fb_reply]
 
 
