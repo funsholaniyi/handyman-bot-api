@@ -29,8 +29,6 @@ def webhook():
     else:
         res = 'I did not quite understand you.',
 
-    print('Action: ' + action)
-    print(res)
     return create_response(res)
 
 
@@ -42,7 +40,7 @@ def search_handyman_around(req):
         print(results)
         fb = facebook_response()
         results = ['Musa', 'Ahmed']
-        reply = fb.quick_replies('Recommended Handymen', results)
+        reply = fb.text_response('Recommended Handymen')
     except Exception as e:
         reply = 'Sorry, I could not find any match.'
     return reply
