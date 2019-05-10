@@ -29,7 +29,11 @@ def webhook():
     elif action == 'select-handyman-services':
         res = select_handyman_services(req)
     else:
-        log.error('Unexpected action.')
+        response = {
+            'fulfillmentText': 'Today we recommend plumber {0}!'.format(random.choice(['Margherita', 'Salami'])),
+        }
+        res = create_response(response)
+    return res
 
     print('Action: ' + action)
     print('Response: ' + res)
@@ -38,7 +42,11 @@ def webhook():
 
 
 def select_handyman_services(req):
-    return
+    response = {
+        'fulfillmentText': 'Today we recommend plumber {0}!'.format(random.choice(['Margherita', 'Salami'])),
+    }
+    res = create_response(response)
+    return res
 
 
 def search_handyman_around(req):
@@ -53,7 +61,7 @@ def search_handyman_around(req):
     print(json.dumps(parameters, indent=4))
 
     response = {
-        'fulfillmentText': 'Today we recommend {0}!'.format(random.choice(['Margherita', 'Salami'])),
+        'fulfillmentText': 'Today we recommend plumber {0}!'.format(random.choice(['Margherita', 'Salami'])),
     }
     res = create_response(response)
     return res
