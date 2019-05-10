@@ -39,6 +39,7 @@ def search_handyman_around(req):
     handyman = HandyMan(parameters)
     try:
         results = handyman.get_list()
+        print(results)
         fb = facebook_response()
         results = ['Musa', 'Ahmed']
         reply = fb.quick_replies('Recommended Handymen', results)
