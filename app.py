@@ -48,7 +48,7 @@ def search_handyman_around(req):
 
 
 def create_response(response):
-    make_response(jsonify({'fulfillmentText': response}))
+    return make_response(jsonify({'fulfillmentText': response}))
 
 
 if __name__ == '__main__':
