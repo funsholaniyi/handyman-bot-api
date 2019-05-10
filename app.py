@@ -30,11 +30,9 @@ def webhook():
 
     if action == 'get_service_list':
         res = search_handyman_around(req)
-        return create_response('Handy man results', res)
+        return create_response(fulfillment_response.fulfillment_text('Handy man results'), res)
     else:
-        return create_response('I did not quite understand you.')
-
-
+        return create_response(fulfillment_response.fulfillment_text('I did not quite understand you.'))
 
 
 def search_handyman_around(req):
@@ -50,8 +48,8 @@ def search_handyman_around(req):
     return [fb_reply]
 
 
-def create_response(text, response_objects=None):
-    return make_response(jsonify(main_response.main_response(text, response_objects)))
+def create_response(text_obj, response_objects=None):
+    return make_response(jsonify(main_response.main_response(text_obj, response_objects)))
 
 
 if __name__ == '__main__':
