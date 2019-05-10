@@ -1,10 +1,14 @@
 from flask import Flask, request, make_response, jsonify
 
-from df_response_lib import facebook_response, fulfillment_response
+from df_response_lib import facebook_response, fulfillment_response, actions_on_google_response
 from handyman import HandyMan
 
 app = Flask(__name__)
 log = app.logger
+
+fb = facebook_response()
+aog = actions_on_google_response()
+main_response = fulfillment_response()
 
 
 @app.route('/', methods=['GET'])
@@ -27,7 +31,7 @@ def webhook():
     if action == 'get_service_list':
         res = search_handyman_around(req)
     else:
-        res = 'I did not quite understand you.',
+        res = aog.simple_response('I did not quite understand you.'),
 
     return create_response(res)
 
@@ -38,17 +42,17 @@ def search_handyman_around(req):
     try:
         results = handyman.get_list()
         print(results)
-        fb = facebook_response()
         results = ['Musa', 'Ahmed']
-        reply = fb.text_response('Recommended Handymen')
+        aog_reply = aog.simple_response('Recommended Handymen')
+        fb_reply = fb.quick_replies('Recommended Handymen', results)
     except Exception as e:
-        reply = 'Sorry, I could not find any match.'
-    return reply
+        aog_reply = aog.simple_response('Sorry, I could not find any match.')
+        fb_reply = fb.text_response('Sorry, I could not find any match.')
+    return [aog_reply, fb_reply]
 
 
 def create_response(response_objs):
-    main_response = fulfillment_response()
-    return main_response.fulfillment_messages(response_objs)
+    return make_response(jsonify(main_response.fulfillment_messages(response_objs)))
 
 
 if __name__ == '__main__':
