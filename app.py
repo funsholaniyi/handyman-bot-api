@@ -1,6 +1,4 @@
-import json
-
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 
 from df_response_lib import facebook_response
 from handyman import HandyMan
@@ -29,11 +27,11 @@ def webhook():
     if action == 'get_service_list':
         res = search_handyman_around(req)
     else:
-        response = {
-            'fulfillmentText': 'I did not quite understand you.',
-        }
-        res = create_response(response)
-    return res
+        res = 'I did not quite understand you.',
+
+    print('Action: ' + action)
+    print('Response: ' + res)
+    return create_response(res)
 
 
 def search_handyman_around(req):
@@ -44,28 +42,13 @@ def search_handyman_around(req):
         fb = facebook_response()
         results = ['Musa', 'Ahmed']
         reply = fb.quick_replies('Recommended Handymen', results)
-        response = {
-            'fulfillmentText': reply,
-        }
-        res = create_response(response)
-        return res
     except Exception as e:
-        response = {
-            'fulfillmentText': 'Sorry, I could not find any match.',
-        }
-        res = create_response(response)
-        return res
+        reply = 'Sorry, I could not find any match.'
+    return reply
 
 
 def create_response(response):
-    """ Creates a JSON with provided response parameters """
-
-    # convert dictionary with our response to a JSON string
-    res = json.dumps(response, indent=4)
-
-    r = make_response(res)
-    r.headers['Content-Type'] = 'application/json'
-    return r
+    make_response(jsonify({'fulfillmentText': response}))
 
 
 if __name__ == '__main__':
