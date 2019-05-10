@@ -30,7 +30,7 @@ def webhook():
         res = 'I did not quite understand you.',
 
     print('Action: ' + action)
-    print('Response: ' + res)
+    print(res)
     return create_response(res)
 
 
