@@ -278,9 +278,9 @@ class facebook_response():
         for button in buttons:
             buttons_json.append(
                 {
-                    "type": button['type'],
                     "url": button['url'],
-                    "title": button['title']
+                    "title": button['title'],
+                    "postback": button['postback']
                 }
             )
 
