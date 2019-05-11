@@ -280,14 +280,14 @@ class facebook_response():
                 {
                     "url": button['url'],
                     "text": button['title'],
-                    "postback": button['postback']
+                    "postback": button['url']
                 }
             )
 
         # return the card
         return {
             "card": {
-                "image_url": str(img_url),
+                "imageUrl": str(img_url),
                 "title": str(title),
                 "subtitle": str(subtitle),
                 "buttons": buttons_json
