@@ -41,14 +41,15 @@ def search_handyman_around(req):
     handyman = HandyMan(parameters)
     try:
         results = handyman.get_list()
+        print(results)
         options = []
         for result in results:
-            options.append('{0} who charges {1} per hour and has a rating of {2}'.format(
+            options.append('{0} who charges {1} Naira per hour and has a rating of {2}'.format(
                 result['username'], result['hourlyRate'], result['rating']
             ))
         fb_reply = fb.quick_replies('Recommended ' + parameters['handyman-service'], options)
-    except Exception as e:
-        fb_reply = fb.text_response(['Sorry, I could not find any match.'])
+    # except Exception as e:
+    #     fb_reply = fb.text_response(['Sorry, I could not find any match.'])
     return main_response.fulfillment_messages([fb_reply])
 
 
