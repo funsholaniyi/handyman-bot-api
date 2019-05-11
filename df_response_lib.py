@@ -286,7 +286,7 @@ class facebook_response():
         # return the card
         return {
             "card": {
-                "image": {"imageUrl": str(img_url)},
+                "imageUrl": str(img_url),
                 "title": str(title),
                 "subtitle": str(subtitle),
                 "buttons": buttons_json

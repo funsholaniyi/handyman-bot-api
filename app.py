@@ -45,8 +45,8 @@ def search_handyman_around(req):
         for result in results:
             title = result['username'] + ' (' + str(result['rating']) + ' Star rating)'
             subtitle = 'Base rate: NGN' + str(result['baseRate']) + ', Hourly rate: NGN' + str(result['hourlyRate'])
-            buttons = [{'title': 'Book Now', 'url': 'https://frontend.com/user/' + result['_id']}]
-            options.append(fb.card_response(title, buttons, subtitle, img_url='https://via.placeholder.com/200'))
+            buttons = [{'title': 'Book Now', 'url': 'https://optimistic-sammet-47aefd.netlify.com/?handyman=' + result['_id']}]
+            options.append(fb.card_response(title, buttons, subtitle, img_url='http://chittagongit.com/images/generic-profile-icon/generic-profile-icon-10.jpg'))
     except Exception as e:
         options = [fb.text_response(['Sorry, I could not find any match at this time.'])]
     if not options: options = [fb.text_response(['Sorry, I could not find any match.'])]
