@@ -1,13 +1,12 @@
 from flask import Flask, request, make_response, jsonify
 
-from df_response_lib import facebook_response, fulfillment_response, actions_on_google_response
+from df_response_lib import facebook_response, fulfillment_response
 from handyman import HandyMan
 
 app = Flask(__name__)
 log = app.logger
 
 fb = facebook_response()
-aog = actions_on_google_response()
 main_response = fulfillment_response()
 
 
@@ -30,9 +29,11 @@ def webhook():
 
     if action == 'get_service_list':
         res = search_handyman_around(req)
-        return create_response(fulfillment_response.fulfillment_text('Handy man results'), res)
+        tex_obj = main_response.fulfillment_text('Handy man results')
+        return create_response(tex_obj, res)
     else:
-        return create_response(fulfillment_response.fulfillment_text('I did not quite understand you.'))
+        text_obj = main_response.fulfillment_text('I did not quite understand you.')
+        return create_response(text_obj)
 
 
 def search_handyman_around(req):
