@@ -43,10 +43,10 @@ def search_handyman_around(req):
     results = handyman.get_list()
     options = []
     for result in results:
-        title = result['username'] + 'with rating ' + str(result['rating'])
+        title = result['username'] + ' (' + str(result['rating']) + ' star rating)'
         subtitle = 'Base rate: NGN' + str(result['baseRate']) + ', Hourly rate: NGN' + str(result['hourlyRate'])
-        buttons = ['Book Now', 'https://frontend.com/user/' + result['_id']]
-        options.append(fb.card_response(title, buttons, subtitle))
+        buttons = {'title': 'Book Now', 'url': 'https://frontend.com/user/' + result['_id'], 'type': 'web_url'}
+        options.append(fb.card_response(title, buttons, subtitle, img_url='https://via.placeholder.com/200'))
     # except Exception as e:
     #     options = [fb.text_response(['Sorry, I could not find any match.'])]
     return main_response.fulfillment_messages(options)

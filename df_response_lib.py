@@ -273,19 +273,21 @@ class facebook_response():
                 "platform": self.platform
             }
 
-    def card_response(self, title, buttons, subtitle=None):
+    def card_response(self, title, buttons, subtitle=None, img_url=None):
         buttons_json = []
         for button in buttons:
             buttons_json.append(
                 {
-                    "text": str(button[0]),
-                    "postback": str(button[1])
+                    "type": button['type'],
+                    "url": button['url'],
+                    "title": button['title']
                 }
             )
 
         # return the card
         return {
             "card": {
+                "image_url": str(img_url),
                 "title": str(title),
                 "subtitle": str(subtitle),
                 "buttons": buttons_json
