@@ -42,5 +42,4 @@ class HandyMan(object):
         # r = requests.post(url + endpoint, data=json.dumps(payload), headers=headers)
         r = requests.get(url + 'handyman/filter?location={0}&occupation={1}'.format(self.city, self.service),
                          headers=headers)
-        print('response is ', r.text)
-        return r.json
+        return r.text
