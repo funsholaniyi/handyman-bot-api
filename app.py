@@ -39,16 +39,16 @@ def webhook():
 def search_handyman_around(req):
     parameters = req['queryResult']['parameters']
     handyman = HandyMan(parameters)
-    try:
-        results = handyman.get_list()
-        options = []
-        for result in results:
-            title = result['username'] + 'with rating ' + result['rating']
-            subtitle = 'Base rate: NGN' + result['baseRate'] + ', Hourly rate: NGN' + result['hourlyRate']
-            buttons = ['Book Now', 'https://frontend.com/user/' + result['_id']]
-            options.append(fb.card_response(title, buttons, subtitle))
-    except Exception as e:
-        options = [fb.text_response(['Sorry, I could not find any match.'])]
+    # try:
+    results = handyman.get_list()
+    options = []
+    for result in results:
+        title = result['username'] + 'with rating ' + result['rating']
+        subtitle = 'Base rate: NGN' + result['baseRate'] + ', Hourly rate: NGN' + result['hourlyRate']
+        buttons = ['Book Now', 'https://frontend.com/user/' + result['_id']]
+        options.append(fb.card_response(title, buttons, subtitle))
+    # except Exception as e:
+    #     options = [fb.text_response(['Sorry, I could not find any match.'])]
     return main_response.fulfillment_messages(options)
 
 
