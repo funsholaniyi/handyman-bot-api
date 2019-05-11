@@ -278,7 +278,6 @@ class facebook_response():
         for button in buttons:
             buttons_json.append(
                 {
-                    "url": button['url'],
                     "text": button['title'],
                     "postback": button['url']
                 }
@@ -287,7 +286,7 @@ class facebook_response():
         # return the card
         return {
             "card": {
-                "imageUrl": str(img_url),
+                "image": {"imageUrl": str(img_url)},
                 "title": str(title),
                 "subtitle": str(subtitle),
                 "buttons": buttons_json
