@@ -46,7 +46,7 @@ def search_handyman_around(req):
         fb_reply = fb.quick_replies('Recommended Handymen', results)
     except Exception as e:
         fb_reply = fb.text_response(['Sorry, I could not find any match.'])
-    return [fb_reply]
+    return main_response.fulfillment_messages([fb_reply])
 
 
 def create_response(text_obj, response_objects=None):
