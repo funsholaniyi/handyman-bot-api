@@ -10,6 +10,7 @@ class actions_on_google_response():
     @param name=display_text, type=list
     Sample example of display_text ex. [["Text to be displayed", "Text to  be spoken", True]]
     """
+
     def simple_response(self, responses):
 
         if len(responses) > 2:
@@ -57,6 +58,7 @@ class actions_on_google_response():
     @param image = list [image_url, accessibility_text]
     @param buttons = list of [button_title, url_link]
     """
+
     def basic_card(self, title, subtitle="", formattedText="", image=None, buttons=None):
         # list to store buttons responses
         buttons_json = []
@@ -112,6 +114,7 @@ class actions_on_google_response():
     @param list_title = string
     @param list_elements = list of list response items
     """
+
     def list_select(self, list_title, list_elements):
         # as per the actions on google response list items must be between 2 and 30
         if len(list_elements) > 30 or len(list_elements) < 2:
@@ -157,7 +160,8 @@ class actions_on_google_response():
     """
     Actions on Google Suggestions chips resoponse
     @param suggestions = list of strings
-    """    
+    """
+
     def suggestion_chips(self, suggestions):
         # if there are no suggestions in the list raise an error
         if len(suggestions) <= 0:
@@ -189,6 +193,7 @@ class actions_on_google_response():
     @param title = string
     @param url = string (a valid URL)
     """
+
     def link_out_suggestion(self, title, url):
         # title should not be null
         if title == "" or url == "":
@@ -203,6 +208,7 @@ class actions_on_google_response():
                     "uri": str(url)
                 }
             }
+
 
 # Responses for Facebook
 class facebook_response():
@@ -267,7 +273,7 @@ class facebook_response():
                 "platform": self.platform
             }
 
-    def card_response(self, title, buttons):
+    def card_response(self, title, buttons, subtitle=None):
         buttons_json = []
         for button in buttons:
             buttons_json.append(
@@ -281,10 +287,12 @@ class facebook_response():
         return {
             "card": {
                 "title": str(title),
+                "subtitle": str(subtitle),
                 "buttons": buttons_json
             },
             "platform": self.platform
         }
+
 
 # Responses for Telegram
 class telegram_response():
@@ -376,7 +384,7 @@ class fulfillment_response():
 
     # fulfillment text builder
     # @param fulfillmentText = string
-    def fulfillment_text(self, fulfillmentText):        
+    def fulfillment_text(self, fulfillmentText):
         if fulfillmentText == "":
             raise Exception("Fulfillment text should not be empty.")
         else:
@@ -428,7 +436,8 @@ class fulfillment_response():
     # @param fulfillment_messages = fulfillment_messages JSON
     # @param output_contexts = output_contexts JSON
     # @param followup_event_input = followup_event_input JSON
-    def main_response(self, fulfillment_text, fulfillment_messages=None, output_contexts=None, followup_event_input=None):
+    def main_response(self, fulfillment_text, fulfillment_messages=None, output_contexts=None,
+                      followup_event_input=None):
         if followup_event_input is not None:
             if output_contexts is not None:
                 if fulfillment_messages is not None:
