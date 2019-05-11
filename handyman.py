@@ -35,11 +35,12 @@ headers = {'content-type': 'application/json',
 class HandyMan(object):
 
     def __init__(self, params):
-        self.service = params['handyman-service']
-        self.city = params['geo-city']
+        self.service = params['handyman-service'].lower()
+        self.city = params['geo-city'].lower()
 
     def get_list(self):
         # payload = {'occupation': self.service, 'location': self.city}
         # r = requests.post(url + endpoint, data=json.dumps(payload), headers=headers)
         r = requests.get(url+'handyman/filter?location={0}&occupation={1}'.format(self.city, self.service), headers=headers)
+        print(r)
         return r.json
