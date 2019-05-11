@@ -23,7 +23,6 @@ https://console.dialogflow.com/api-client/#/agent//prebuiltAgents/Weather
 This sample uses the WWO Weather Forecast API and requires an WWO API key
 Get a WWO API key here: https://developer.worldweatheronline.com/api/
 """
-import json
 
 import requests
 
@@ -35,12 +34,13 @@ headers = {'content-type': 'application/json',
 class HandyMan(object):
 
     def __init__(self, params):
-        self.service = params['handyman-service'].lower()
-        self.city = params['geo-city'].lower()
+        self.service = params['handyman-service'].casefold()
+        self.city = params['geo-city'].casefold()
 
     def get_list(self):
         # payload = {'occupation': self.service, 'location': self.city}
         # r = requests.post(url + endpoint, data=json.dumps(payload), headers=headers)
-        r = requests.get(url+'handyman/filter?location={0}&occupation={1}'.format(self.city, self.service), headers=headers)
-        print(r)
+        r = requests.get(url + 'handyman/filter?location={0}&occupation={1}'.format(self.city, self.service),
+                         headers=headers)
+        print('response is ', r.text)
         return r.json
