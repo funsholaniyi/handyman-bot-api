@@ -43,8 +43,8 @@ def search_handyman_around(req):
     results = handyman.get_list()
     options = []
     for result in results:
-        title = result['username'] + 'with rating ' + result['rating']
-        subtitle = 'Base rate: NGN' + result['baseRate'] + ', Hourly rate: NGN' + result['hourlyRate']
+        title = result['username'] + 'with rating ' + str(result['rating'])
+        subtitle = 'Base rate: NGN' + str(result['baseRate']) + ', Hourly rate: NGN' + str(result['hourlyRate'])
         buttons = ['Book Now', 'https://frontend.com/user/' + result['_id']]
         options.append(fb.card_response(title, buttons, subtitle))
     # except Exception as e:
