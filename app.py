@@ -45,8 +45,8 @@ def search_handyman_around(req):
     options = []
     for result in results:
         options.append(
-            result['username'] + ' who charges ' + result['hourlyRate'] + ' Naira per hour and has a rating of ' +
-            result['rating']
+            result['username'] + ' who charges ' + str(result['hourlyRate']) + ' Naira per hour and has a rating of ' +
+            str(result['rating'])
         )
     fb_reply = fb.quick_replies('Recommended ' + parameters['handyman-service'], options)
     # except Exception as e:
