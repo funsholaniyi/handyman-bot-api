@@ -1,7 +1,3 @@
-# -*- coding:utf8 -*-
-# !/usr/bin/env python
-"""
-
 import requests
 
 url = 'https://cryptic-dusk-24156.herokuapp.com/'
